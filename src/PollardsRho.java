@@ -49,6 +49,7 @@ public class PollardsRho implements Factoring {
             return;
         }
         BigInteger divisor = rho(num);
+        //BigInteger divisor = brents(num);
 
         if (divisor == null) {
             factors = null;
@@ -85,4 +86,9 @@ public class PollardsRho implements Factoring {
 
         return divisor;
     }
+    
+    private BigInteger brent(BigInteger n) {
+        return null;
+    }
+    
 }
