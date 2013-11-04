@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,13 +27,9 @@ public class Main {
         while(!br.ready());
         while (br.ready()) {
             line = br.readLine();
-            numbers.add(new BigInteger(line));
-        } // End while
-        
-        for(BigInteger num : numbers) {
-            factorizer.factorize(num);
+            factorizer.factorize(new BigInteger(line));
             System.out.println();
-        }
+        } // End while
         
     } // main
 }
