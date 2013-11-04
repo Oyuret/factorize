@@ -1,5 +1,6 @@
 
 import java.math.BigInteger;
+import java.util.BitSet;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Random;
@@ -32,7 +33,7 @@ public class PollardsRho implements Factoring {
             System.out.println("fail");
             return;
         }
-
+        
         for (BigInteger factor : factors) {
             System.out.println(factor);
         }
@@ -48,8 +49,8 @@ public class PollardsRho implements Factoring {
             factors.add(num);
             return;
         }
-        BigInteger divisor = rho(num);
-        //BigInteger divisor = brents(num);
+        //BigInteger divisor = rho(num);
+        BigInteger divisor = brent(num);
 
         if (divisor == null) {
             factors = null;
@@ -75,7 +76,7 @@ public class PollardsRho implements Factoring {
 
 
         do {
-            if ((new Date().getTime() - start) > 150) {
+            if ((new Date().getTime() - start) > 200) {
                 return null;
             }
             a = a.multiply(a).mod(n).add(c).mod(n);
@@ -86,9 +87,57 @@ public class PollardsRho implements Factoring {
 
         return divisor;
     }
-    
+
     private BigInteger brent(BigInteger n) {
-        return null;
+        if (n.mod(TWO).compareTo(ZERO) == 0) {
+            return TWO;
+        }
+
+        BigInteger y = new BigInteger(n.bitLength(), random);
+        BigInteger c = new BigInteger(n.bitLength(), random);
+        BigInteger m = new BigInteger(n.bitLength(), random);
+        BigInteger x=ONE;
+        BigInteger g = BigInteger.ONE;
+        BigInteger r = BigInteger.ONE;
+        BigInteger q = BigInteger.ONE;
+        BigInteger k;
+        BigInteger ys = ONE;
+        BigInteger i;
+        
+        while(g.compareTo(ONE)==0){
+        	x = y;
+        	for( i= BigInteger.ZERO;i.compareTo(r) <0;i=i.add(ONE)){
+        			y =((y.multiply(y)).mod(n).add(c)).mod(n);
+        	}
+        	k=ZERO;
+        	while(k.compareTo(r)<0 && g.compareTo(ONE)==0){
+        		ys =y;
+                if ((new Date().getTime() - start) > 170) {
+                    return null;
+                }
+        		for(i=ZERO;i.compareTo(m.min(r.subtract(k)))<0;i=i.add(ONE)){
+        			y =((y.multiply(y)).mod(n).add(c)).mod(n);
+        			q = q.multiply(x.subtract(y).abs()).mod(n);
+        		}
+        		g = q.gcd(n);
+        		k = k.add(m);
+        	}
+        	r=r.multiply(TWO);
+        }
+        
+        if(g.compareTo(n)==0){
+        	while(true){
+                if ((new Date().getTime() - start) > 170) {
+                    return null;
+                }
+        		ys =((ys.multiply(ys)).mod(n).add(c)).mod(n); 
+        		g = (x.subtract(ys).abs()).gcd(n);
+        		if(g.compareTo(ONE)>0){
+        			break;
+        		}
+        	}
+        }
+    return g;
     }
     
 }
