@@ -17,7 +17,6 @@ public class Main {
     
     public static void main(String[] args) throws IOException {
         Factoring factorizer = new PollardsRho();
-        ArrayList<BigInteger> numbers = new ArrayList<>(100);
 
         BufferedReader br = new BufferedReader(
                 new InputStreamReader(System.in));
