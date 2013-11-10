@@ -3,7 +3,7 @@
 #include <iostream>
 
 bool pollards::factor(mpz_t n, std::vector<mpz_class> & factors) {
-  primes::factor(n, factors,0);
+  primes::factor(n, factors);
   pollards::factor(n, factors, 2);
 }
 
@@ -30,9 +30,9 @@ bool pollards::factor(mpz_t n, std::vector<mpz_class> & factors, int initValue) 
     mpz_init(sqrt);
     mpz_sqrt(sqrt, n);
 
-    pollards::factor(sqrt, factors);
+    pollards::factor(sqrt, factors,2);
     std::vector<mpz_class> factorTemp;
-    pollards::factor(sqrt, factorTemp);
+    pollards::factor(sqrt, factorTemp,2);
 
     for(int i=0; i< 2; ++i) {
       for(int j=0; j< factorTemp.size(); ++j) {
@@ -103,12 +103,12 @@ bool pollards::factor(mpz_t n, std::vector<mpz_class> & factors, int initValue) 
     }
 
     if (mpz_cmp(factor, n) == 0) {
-      return pollards::factor(n, factors, initValue+1);
 
+      return pollards::factor(n, factors, initValue+1);
     }
     else {
       mpz_divexact(n, n, factor);
-      if (pollards::factor(n, factors) && pollards::factor(factor, factors))
+      if (pollards::factor(n, factors,2) && pollards::factor(factor, factors,2))
         return true;
       else
         return false;
